@@ -10,10 +10,6 @@ export default (req, res, next) => {
         const decoded = jwt.verify(token, "my_temporary_secret");
         req.data = decoded.data;
         next();
-        // if(req.params.id === decoded.user.id){
-        //     return next();
-        // } 
-        // res.status(403).send("Unauthorized")
     } catch (ex) {
         res.status(400).send("Invalid token.");
     }

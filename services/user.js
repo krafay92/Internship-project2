@@ -73,12 +73,12 @@ const UserService = {
 
   update: async (id, body) => {
     try {
-      const check = await UserModel.findOne({ name: body.name });
+      const check = await UserModel.findOne({ first_name: body.first_name, last_name: body.last_name });
       if (check) {
         return { message: "failed" }
       }
 
-      const update_user = await UserModel.findByIdAndUpdate(id, { name: body.name })
+      const update_user = await UserModel.findByIdAndUpdate(id, { first_name: body.first_name, last_name: body.last_name })
       if (!update_user) {
         return { message: "error" }
       }

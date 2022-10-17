@@ -10,7 +10,7 @@ router.post("/", validate(authValidation.add), controllers.add);
 router.get("/:id", authenticate, controllers.getById);
 router.post("/register", controllers.registration);
 router.post("/login", controllers.login);
-router.patch("/:id", authenticate, controllers.update);
+router.patch("/:id",validate(authValidation.update), authenticate, controllers.update);
 router.delete("/:id", authenticate, controllers.delete);
 
 export default router;

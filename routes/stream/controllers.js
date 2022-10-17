@@ -26,17 +26,16 @@ const controller = {
     },
 
     getStreamHistory: async (req, res) => {
-        try {
-            const response = await StreamService.getStreamHistory();
-            if (response.message === "success") {
-                return httpResponse.SUCCESS(res, response.data);
-            }
-    
+        const response = await StreamService.getStreamHistory();
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res, response.data);
+        }
+        else if (response.message === "failed") {
             return httpResponse.NOT_FOUND(res);
-        } catch (error) {
+        }
+        else if (response.message === "error") {
             return httpResponse.INTERNAL_SERVER(res, response.data)
         }
-
     },
 
     add: async (req, res) => {
@@ -51,42 +50,31 @@ const controller = {
     },
 
     update: async (req, res) => {
-        try {
-            if(req.data.id === req.body.user_id) {
-                const response = await StreamService.update(req.params.id, req.body);
-    
-                if (response.message === "success") {
-                    return httpResponse.SUCCESS(res, response.data)
-                }
-                if (response.message === "error") {
-                    return httpResponse.INTERNAL_SERVER(res, response.data)
-                }
-    
-                return httpResponse.NOT_FOUND(res, response.message)
-            }
+        const response = await StreamService.update(req.params.id, req.body);
 
-            return httpResponse.UNAUTHORIZED(res)
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER(res, error)
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res)
+        }
+        else if (response.message === "failed") {
+            return httpResponse.NOT_FOUND(res)
+        }
+        else if (response.message === "error") {
+            return httpResponse.INTERNAL_SERVER(res, response.data)
         }
     },
 
-      delete: async (req, res) => {
-        try {
-            if(req.data.id === req.body.user_id) {
-                const response = await StreamService.delete(req.params.id);
-                if(response.message === "success"){
-                  return httpResponse.SUCCESS(res, response.data)
-                }
-      
-                return httpResponse.NOT_FOUND(res, response.data)
-            }
-
-            return httpResponse.UNAUTHORIZED(res)
-        } catch (error) {
-          return httpResponse.INTERNAL_SERVER(res, error)
+    delete: async (req, res) => {
+        const response = await StreamService.delete(req.params.id);
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res)
         }
-      }
+        else if (response.message === "failed") {
+            return httpResponse.NOT_FOUND(res);
+        }
+        else if (response.message === "error") {
+            return httpResponse.INTERNAL_SERVER(res, response.data)
+        }
+    }
 }
 
 export default controller;
