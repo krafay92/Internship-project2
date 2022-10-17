@@ -53,10 +53,13 @@ const controller = {
     update: async (req, res) => {
         try {
             if(req.data.id === req.body.user_id) {
-                const response = await StreamService.updateStream(req.params.id, req.body);
+                const response = await StreamService.update(req.params.id, req.body);
     
                 if (response.message === "success") {
                     return httpResponse.SUCCESS(res, response.data)
+                }
+                if (response.message === "error") {
+                    return httpResponse.INTERNAL_SERVER(res, response.data)
                 }
     
                 return httpResponse.NOT_FOUND(res, response.message)
@@ -71,7 +74,7 @@ const controller = {
       delete: async (req, res) => {
         try {
             if(req.data.id === req.body.user_id) {
-                const response = await StreamService.deleteStream(req.params.id);
+                const response = await StreamService.delete(req.params.id);
                 if(response.message === "success"){
                   return httpResponse.SUCCESS(res, response.data)
                 }

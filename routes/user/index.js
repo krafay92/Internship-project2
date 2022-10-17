@@ -5,7 +5,7 @@ import controllers from "./controllers.js";
 import authenticate from "../../middlewares/authenticate.js";
 
 const router = express.Router();
-router.get("/", controllers.getAll);
+router.get("/",authenticate, controllers.getAll);
 router.post("/", validate(authValidation.add), controllers.add);
 router.get("/:id", authenticate, controllers.getById);
 router.post("/register", controllers.registration);

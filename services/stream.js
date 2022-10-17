@@ -82,7 +82,7 @@ const StreamService = {
 
             return { message: "failed" }
         } catch (error) {
-
+            return { message: "error", data: error.message }
         }
     },
 
