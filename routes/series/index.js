@@ -5,11 +5,11 @@ import controllers from "./controllers.js";
 import authenticate from "../../middlewares/authenticate.js";
 
 const router = express.Router();
-router.get("/", controllers.getAll);
-router.get("/genre/:id", controllers.getByGenre);
-router.post("/",validate(authValidation.add), controllers.add);
-router.get("/:id", controllers.getById);
-router.patch("/:id",validate(authValidation.update), controllers.update);
-router.delete("/:id", controllers.delete);
+router.get("/", authenticate, controllers.getAll);
+router.get("/genre/:id", authenticate, controllers.getByGenre);
+router.post("/", authenticate, validate(authValidation.add), controllers.add);
+router.get("/:id", authenticate, controllers.getById);
+router.patch("/:id", authenticate,validate(authValidation.update), controllers.update);
+router.delete("/:id", authenticate, controllers.delete);
 
 export default router;

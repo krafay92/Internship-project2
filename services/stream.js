@@ -1,5 +1,6 @@
-import StreamModel from "../models/stream.js"
-import jwt from 'jsonwebtoken'
+import StreamModel from "../models/stream.js";
+import mongoose from "mongoose";
+const ObjectId = mongoose.Types.ObjectId;
 
 const StreamService = {
     getAll: async () => {
@@ -51,7 +52,7 @@ const StreamService = {
                 }
             ])
 
-            if(history) {
+            if (history) {
                 return { message: "success", data: history }
             }
 
@@ -94,6 +95,41 @@ const StreamService = {
             }
 
             return { message: "error" }
+        } catch (error) {
+            return { message: "error", data: error.message }
+        }
+    },
+
+    getByTime: async (id) => {
+        try {
+            const stream = await StreamModel.aggregate([
+                {
+                    $match: {
+                        user_id: ObjectId(id)
+                    }
+                },
+                {
+                    $group: {
+                        _id: "$episode_id", total_time: { $sum: "$time" }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null, max_time: { $max: "$total_time" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0
+                    }
+                }
+            ])
+
+            if (stream) {
+                return { message: "success", data: stream }
+            }
+
+            return { message: "failed" }
         } catch (error) {
             return { message: "error", data: error.message }
         }

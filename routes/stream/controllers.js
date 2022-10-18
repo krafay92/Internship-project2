@@ -74,6 +74,19 @@ const controller = {
         else if (response.message === "error") {
             return httpResponse.INTERNAL_SERVER(res, response.data)
         }
+    },
+
+    getByTime: async (req, res) => {
+        const response = await StreamService.getByTime(req.params.id);
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res, response.data)
+        }
+        else if (response.message === "failed") {
+            return httpResponse.NOT_FOUND(res);
+        }
+        else if (response.message === "error") {
+            return httpResponse.INTERNAL_SERVER(res, response.data)
+        }
     }
 }
 

@@ -67,7 +67,7 @@ const SeasonService = {
 
             return { message: "failed" }
         } catch (error) {
-
+            return { message: "error", data: error.message}
         }
     },
 
@@ -78,7 +78,7 @@ const SeasonService = {
                 return { message: "success" }
             }
 
-            return { message: "error" }
+            return { message: "failed" }
         } catch (error) {
             return { message: "error", data: error.message }
         }

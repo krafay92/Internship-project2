@@ -4,8 +4,11 @@ const SeriesService = {
     getAll: async () => {
         try {
             const data = await SeriesModel.find();
-
-            return { message: "success", data };
+            
+            if (data) {
+                return { message: "success", data };
+            }
+            return { message: "failed"}
         } catch (error) {
             return { message: "error", data: error.message };
         }
@@ -67,7 +70,7 @@ const SeriesService = {
 
             return { message: "failed" }
         } catch (error) {
-
+            return { message: "error", data: error.message}
         }
     },
 
@@ -78,7 +81,7 @@ const SeriesService = {
                 return { message: "success" }
             }
 
-            return { message: "error" }
+            return { message: "failed" }
         } catch (error) {
             return { message: "error", data: error.message }
         }

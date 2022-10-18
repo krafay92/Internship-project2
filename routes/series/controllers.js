@@ -3,39 +3,41 @@ import httpResponse from "../../utils/httpResponse.js";
 
 const controller = {
     getAll: async (req, res) => {
-        try {
-            const data = await SeriesService.getAll();
+        const data = await SeriesService.getAll();
+        if (data.message === "success") {
             return httpResponse.SUCCESS(res, data.data);
-        } catch (error) {
+        }
+        else if (data.message === "failed") {
+            return httpResponse.NOT_FOUND(res);
+        }
+        else if (data.message === "error") {
             return httpResponse.INTERNAL_SERVER(res, error);
         }
     },
 
     getById: async (req, res) => {
-        try {
-            const response = await SeriesService.getById(req.params.id);
-            if (response.message === "success") {
-                return httpResponse.SUCCESS(res, response.data)
-            }
-
+        const response = await SeriesService.getById(req.params.id);
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res, response.data)
+        }
+        else if (response.message === "failed") {
             return httpResponse.NOT_FOUND(res, response.data);
         }
-
-        catch (error) {
+        else if (response.message === "error") {
             return httpResponse.INTERNAL_SERVER(res, error)
         }
     },
 
     getByGenre: async (req, res) => {
-        try {
-            const response = await SeriesService.getByGenre(req.params.id);
-            if(response.message === "success") {
-                return httpResponse.SUCCESS(res, response.data);
-            }
-
+        const response = await SeriesService.getByGenre(req.params.id);
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res, response.data);
+        }
+        else if (response.message === "failed") {
             return httpResponse.NOT_FOUND(res);
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER(res, error)    
+        }
+        else if (response.message === "error") {
+            return httpResponse.INTERNAL_SERVER(res, error)
         }
     },
 
@@ -51,36 +53,28 @@ const controller = {
     },
 
     update: async (req, res) => {
-        try {
-            // if (req.data.id === req.body.user_id) {
-                const response = await SeriesService.update(req.params.id, req.body);
+        const response = await SeriesService.update(req.params.id, req.body);
 
-                if (response.message === "success") {
-                    return httpResponse.SUCCESS(res, response.data)
-                }
-
-                return httpResponse.FORBIDDEN(res, response.message)
-            // }
-
-            // return httpResponse.UNAUTHORIZED(res)
-        } catch (error) {
-            return httpResponse.INTERNAL_SERVER(res, error)
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res)
+        }
+        else if (response.message === "failed") {
+            return httpResponse.FORBIDDEN(res)
+        }
+        else if (response.message === "error") {
+            httpResponse.INTERNAL_SERVER(res, response.data)
         }
     },
 
     delete: async (req, res) => {
-        try {
-            // if (req.data.id === req.body.user_id) {
-                const response = await SeriesService.delete(req.params.id);
-                if (response.message === "success") {
-                    return httpResponse.SUCCESS(res, response.data)
-                }
-
-                return httpResponse.NOT_FOUND(res, response.data)
-            // }
-
-            // return httpResponse.UNAUTHORIZED(res)
-        } catch (error) {
+        const response = await SeriesService.delete(req.params.id);
+        if (response.message === "success") {
+            return httpResponse.SUCCESS(res, response.data)
+        }
+        else if (response.message === "failed") {
+            return httpResponse.NOT_FOUND(res, response.data)
+        }
+        else if (response.message === "error") {
             return httpResponse.INTERNAL_SERVER(res, error)
         }
     }

@@ -7,7 +7,7 @@ const schema = {
             name: Joi.string().required(),
             description: Joi.string().required(),
             trailer: Joi.string().required()
-        }),
+        })
     },
 
     update: {
